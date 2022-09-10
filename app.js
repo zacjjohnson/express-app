@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const PORT = 3000;
 // const axios = require('axios');
 // variables and declarations always at the top of the file
@@ -17,8 +18,14 @@ mongoose
 
 // middleware always comes between declarations and routes
 // ========== MIDDLEWARE =============
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+
+
 app.use(express.static('public'));
 // app.use(express.static('views'));
+
 app.set("views", __dirname + "/views");
 app.set("view engine", "hbs");
 
@@ -29,6 +36,7 @@ app.set("view engine", "hbs");
 // this is what determines the prefix to your routes winthin the file you are requiring. if you add "/blah" then all the routes in your index file would have to start with blah before any routes defined. ie: you create a route in index.js that has an endpoint of "/home" but you prefixed "/blah" in the app.js to reuire index.js, your end resultys from the route would be www.domainname.com/blah/home
 
 app.use('/', require('./routes/index'));
+app.use('/animals', require('./routes/animals/animals'));
 
 // ====================================
 
